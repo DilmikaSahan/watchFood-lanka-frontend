@@ -1,0 +1,35 @@
+<div class="complaint-list">
+  <h3>Complaints</h3>
+
+  <table *ngIf="complaints && complaints.length; else noData">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Category</th>
+        <th>Status</th>
+        <th>Priority</th>
+        <th>District</th>
+        <th>Created At</th>
+        <th *ngIf="showActions">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let c of complaints">
+        <td>{{ c.complainId }}</td>
+        <td>{{ c.category }}</td>
+        <td>{{ c.status || 'PENDING' }}</td>
+        <td>{{ c.priorityLevel || '-' }}</td>
+        <td>{{ c.district }}</td>
+        <td>{{ c.complaintAt | date: 'short' }}</td>
+        <td *ngIf="showActions">
+          <button class="btn" (click)="view.emit(c)">View</button>
+          <button class="btn btn-secondary" (click)="action.emit(c)">Action</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #noData>
+    <p class="no-data">No complaints found.</p>
+  </ng-template>
+</div>
