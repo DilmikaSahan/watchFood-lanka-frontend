@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { ComplaintList } from "../../components/complaint-list/complaint-list";
+import { ComplaintsView } from "../../components/complaints-view/complaints-view";
 
 @Component({
   selector: 'app-user-complaints-view',
-  imports: [ComplaintList],
+  imports: [ ComplaintsView],
   templateUrl: './user-complaints-view.html',
   styleUrl: './user-complaints-view.css',
 })

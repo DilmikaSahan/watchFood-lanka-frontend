@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Complaint {
-  complainId: number;
+  complaintId: number;
   complainerId: string;        // UUID string
   category: string;            
   description: string;
@@ -49,5 +49,10 @@ export class ComplaintsService {
     addComplaint(payload: CreateComplaintPayload): Observable<any> {
       return this.http.post(`${this.baseUrl}/addComplaint`, payload);
     }
+    getComplaintsByUser(userId: string): Observable<Complaint[]> {
+      return this.http.get<Complaint[]>(`${this.baseUrl}/myComplaints`);
+}
+
+
 
 }
