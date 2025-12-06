@@ -5,7 +5,6 @@
     <h4>Basic Info</h4>
     <p><span class="label">Category:</span> {{ complaint.category }}</p>
     <p><span class="label">Status:</span> {{ complaint.status || 'PENDING' }}</p>
-    <p><span class="label">Priority:</span> {{ complaint.priorityLevel || '-' }}</p>
     <p><span class="label">Created At:</span> {{ complaint.complaintAt | date: 'short' }}</p>
   </div>
 
@@ -22,24 +21,42 @@
     <p>{{ complaint.description }}</p>
   </div>
 
-  <div class="section">
+  <div class="section" *ngIf="role !== 'USER'">
     <h4>Officer</h4>
     <p><span class="label">Officer ID:</span> {{ complaint.officer || 'Not assigned' }}</p>
     <p><span class="label">Officer Note:</span> {{ complaint.officerNote || '-' }}</p>
   </div>
 
   <div class="section">
-    <h4>Images</h4>
-    <div *ngIf="complaint.imageUrl && complaint.imageUrl.length; else noImages">
-      <div class="image-list">
-        <img *ngFor="let img of complaint.imageUrl"
-          [src]="img"
-          alt="Complaint image" />
-      </div>
+   <div class="section">
+  <h4>Images</h4>
+  <div *ngIf="complaint.imageUrl && complaint.imageUrl.length; else noImages">
+    
+    <div class="image-list">
+      <img 
+        *ngFor="let img of complaint.imageUrl"
+        [src]="img"
+        alt="Complaint image"
+        (click)="openImageViewer(img)"
+      />
     </div>
-    <ng-template #noImages>
-      <p>No images attached.</p>
-    </ng-template>
+
+  </div>
+
+  <ng-template #noImages>
+    <p>No images attached.</p>
+  </ng-template>
+</div>
+
+<!-- Fullscreen Modal Viewer -->
+<div class="image-modal" *ngIf="selectedImage" (click)="closeImageViewer()">
+  <img [src]="selectedImage">
+</div>
+ 
+  </div>
+
+  <div class="actions" *ngIf="canUpdate()">
+    <button (click)="openUpdateDialog()">Update</button>
   </div>
 </div>
 

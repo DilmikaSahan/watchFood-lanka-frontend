@@ -20,7 +20,7 @@ export class ComplaintForm implements OnInit {
   uploadedImageUrls: string[] = [];
   selectedFiles: File[] = [];
 
-  readonly blobSasUrl = 'https://sahan.blob.core.windows.net/complaint-images?sp=racwdl&st=2025-12-03T07:50:04Z&se=2025-12-03T16:05:04Z&spr=https&sv=2024-11-04&sr=c&sig=%2F5jRMXwQhX2lZ%2FDhbEx5a7%2FiJomGJcdlV87BctDfqAA%3D';
+  readonly blobSasUrl = 'https://sahan.blob.core.windows.net/complaint-images?sp=racwdli&st=2025-12-05T04:57:10Z&se=2026-12-05T13:12:10Z&spr=https&sv=2024-11-04&sr=c&sig=3aKW8E%2FbcyLZLonLwHazlfv8JDzMHLMdUXj4P3OI4RQ%3D';
   CONTAINER_NAME = 'complaint-images';
 
   provinces: string[] = [

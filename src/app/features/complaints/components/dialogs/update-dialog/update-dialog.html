@@ -1,0 +1,75 @@
+<div class="dialog-wrapper">
+
+  <h2>Update Complaint</h2>
+
+  <form *ngIf="complaint" class="form-container">
+
+    <!-- USER UPDATE FORM -->
+    <div *ngIf="role === 'USER'">
+
+      <div class="form-group">
+        <label>Category *</label>
+        <select [(ngModel)]="complaint.category" name="category" required>
+          <option value="">-- Select Category --</option>
+          <option *ngFor="let c of categories" [value]="c">{{c}}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Description *</label>
+        <textarea [(ngModel)]="complaint.description" name="description" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Province * <i style="font-size: smaller; color: blue;">please select province !</i></label>
+        <select [(ngModel)]="complaint.province" name="province" (change)="onProvinceChange()" required>
+          <option value="">-- Select Province --</option>
+          <option *ngFor="let p of provinces" [value]="p">{{p}}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>District * <i style="font-size: smaller; color: blue;">please select district !</i></label>
+        <select [(ngModel)]="complaint.district" name="district" required>
+          <option value="">-- Select District --</option>
+          <option *ngFor="let d of districts" [value]="d">{{d}}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>City *</label>
+        <input [(ngModel)]="complaint.city" name="city" required />
+      </div>
+
+      <div class="form-group">
+        <label>Location *</label>
+        <input [(ngModel)]="complaint.location" name="location" required />
+      </div>
+    </div>
+
+    <!-- OFFICER UPDATE FORM -->
+    <div *ngIf="role === 'OFFICER'">
+
+      <div class="form-group">
+        <label>Status *</label>
+        <select [(ngModel)]="complaint.status" name="status" required>
+          <option value="PENDING">PENDING</option>
+          <option value="IN_PROGRESS">IN_PROGRESS</option>
+          <option value="RESOLVED">RESOLVED</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Officer Note *</label>
+        <textarea [(ngModel)]="complaint.officerNote" name="officerNote" required>
+        </textarea>
+      </div>
+    </div>
+
+    <div class="dialog-actions">
+      <button type="button" class="btn update-btn" (click)="update()">Update</button>
+      <button type="button" class="btn cancel-btn" (click)="close()">Cancel</button>
+    </div>
+
+  </form>
+</div>

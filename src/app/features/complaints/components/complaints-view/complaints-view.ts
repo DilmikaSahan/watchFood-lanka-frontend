@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ComplaintsService, Complaint } from '../../services/complaints.service';
 import { KeycloakService } from '../../../../core/auth/services/keycloak';
 import { CommonModule } from '@angular/common';  
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -26,7 +27,7 @@ export class ComplaintsView implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private complaintService: ComplaintsService, private keycloakservice: KeycloakService) {}
+  constructor(private complaintService: ComplaintsService, private keycloakservice: KeycloakService, private router: Router) {}
   roles: string[] = [];
 
   ngOnInit(): void {
@@ -57,7 +58,7 @@ export class ComplaintsView implements AfterViewInit {
   }
 
   viewComplaint(complaint: Complaint) {
-    console.log('View complaint', complaint);
+    this.router.navigate(['user/complaints/details', complaint.complaintId]);
   }
 
   adjustColumnsByRole() {
