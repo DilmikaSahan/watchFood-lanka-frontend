@@ -1,1 +1,51 @@
-<p>admin-dashboard-main works!</p>
+<div class="grid-container">
+<div class="dashboard-wrapper two-column">
+    <section class="column complaints">
+        <h2 class="section-title">Complaints Statistics</h2>
+        <div class="stat-cards">
+            <mat-card class="stat-card red-lb">
+                <h3 >Total Complaints</h3>
+                <p>{{ stats.totalComplaints }}</p>
+            </mat-card>
+            <mat-card class="stat-card red-lb">
+                <h3>Pending</h3>
+                <p>{{ stats.pendingComplaints }}</p>
+            </mat-card>
+            <mat-card class="stat-card">
+                <h3>Under Investigation</h3>
+                <p>{{ stats.inProgressComplaints }}</p>
+            </mat-card>
+            <mat-card class="stat-card">
+                <h3>Rejected</h3>
+                <p>{{ stats.rejectedComplaints }}</p>
+            </mat-card>
+            <mat-card class="stat-card">
+                <h3>Resolved</h3>
+                <p>{{ stats.resolvedComplaints }}</p>
+            </mat-card>
+        </div>
+    </section>
+
+    <section class="column users">
+        <h2 class="section-title">Users Statistics</h2>
+        <div class="stat-cards">
+            <mat-card class="stat-card red-lb">
+                <h3>Total Users</h3>
+                <p>{{ stats.totalUsers }}</p>
+            </mat-card>
+            <mat-card class="stat-card">
+                <h3>Regular Users</h3>
+                <p>{{ stats.totalRegularUsers }}</p>
+            </mat-card>
+            <mat-card class="stat-card">
+                <h3>Officers</h3>
+                <p>{{ stats.totalOfficers }}</p>
+            </mat-card>
+            <mat-card class="stat-card">
+                <h3>Admins</h3>
+                <p>{{ stats.totalAdmins }}</p>
+            </mat-card>
+        </div>
+    </section>
+</div>
+</div>

@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { Navbar } from '../../../shared/components/navbar/navbar';
-import {MatGridListModule} from '@angular/material/grid-list';
+import { AdminDashboardMain } from '../../complaints/pages/admin-dashboard-main/admin-dashboard-main';
 
 @Component({
   selector: 'app-admin-dashboard',
-  imports: [Navbar, MatGridListModule],
+  imports: [Navbar, AdminDashboardMain],
   templateUrl: './admin-dashboard.html',
   styleUrl: './admin-dashboard.css',
 })

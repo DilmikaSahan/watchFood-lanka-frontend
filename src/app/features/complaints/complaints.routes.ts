@@ -31,6 +31,11 @@ export const complaintRoutes: Routes = [
     loadComponent: () =>
       import('./pages/officer-assigned-complaint-view/officer-assigned-complaint-view')
         .then(m => m.OfficerAssignedComplaintView)
-  } 
+  },
+  {
+    path: 'adminDashboardMain',
+    loadComponent:()=>import('./pages/admin-dashboard-main/admin-dashboard-main')
+        .then(m => m.AdminDashboardMain)
+  }
 
 ];

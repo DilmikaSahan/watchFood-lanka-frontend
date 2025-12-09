@@ -37,6 +37,13 @@ export interface UpdateStatusPayload  {
   officerNote?: string;
 }
 
+export interface Complaintstatatistics {
+  totalComplaints: number;
+  resolvedComplaints: number;
+  pendingComplaints: number;
+  inProgressComplaints: number;
+  rejectedComplaints: number;
+}
 
 @Injectable({
     providedIn: 'root'
@@ -82,4 +89,8 @@ export class ComplaintsService {
     assignComplaintToOfficer(complaintId: number) {
       return this.http.put(`${this.baseUrl}/assignOfficer/${complaintId}`, {});
     }
+    getComplaintStatistics(): Observable<Complaintstatatistics> {
+      return this.http.get<Complaintstatatistics>(`${this.baseUrl}/getComplaintStats`);
+    }
+
 }
