@@ -19,6 +19,18 @@ export const complaintRoutes: Routes = [
     loadComponent: () =>
       import('./components/complaint-detail/complaint-detail')
         .then(m => m.ComplaintDetail)
-  }
+  },
+  {
+    path: 'viewAllComplaints',
+    loadComponent: () =>
+      import('./components/complaints-view/complaints-view')
+        .then(m => m.ComplaintsView)
+  },
+  {
+    path: 'officerAssignedComplaints',
+    loadComponent: () =>
+      import('./pages/officer-assigned-complaint-view/officer-assigned-complaint-view')
+        .then(m => m.OfficerAssignedComplaintView)
+  } 
 
 ];

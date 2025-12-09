@@ -53,5 +53,8 @@ export class KeycloakService{
     getRoles(): string[]{
         return this.keycloak.realmAccess?.roles ?? [];
     }
+    getUserID(): string | undefined{
+        return this.keycloak.tokenParsed?.sub;
+    }
 
 }

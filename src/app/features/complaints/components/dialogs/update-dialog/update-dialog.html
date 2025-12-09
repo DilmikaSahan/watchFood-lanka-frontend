@@ -1,12 +1,10 @@
 <div class="dialog-wrapper">
-
-  <h2>Update Complaint</h2>
-
-  <form *ngIf="complaint" class="form-container">
+    <mat-tab-group *ngIf="role === 'USER'"> 
 
     <!-- USER UPDATE FORM -->
-    <div *ngIf="role === 'USER'">
 
+    <mat-tab label="Update Details">  
+    <form *ngIf="complaint" class="form-container">
       <div class="form-group">
         <label>Category *</label>
         <select [(ngModel)]="complaint.category" name="category" required>
@@ -45,17 +43,50 @@
         <label>Location *</label>
         <input [(ngModel)]="complaint.location" name="location" required />
       </div>
-    </div>
+      <div class="dialog-actions">
+        <button type="button" class="btn update-btn" (click)="update()">Update</button>
+        <button type="button" class="btn cancel-btn" (click)="close()">Cancel</button>
+      </div>
+    </form>
+    </mat-tab>
+    <!--image panel-->
+    <mat-tab label="Update Images">
+      <div class="image-panel">
+
+        <h4>Existing Images</h4>
+        <ul class="image-list">
+          <li *ngFor="let img of currentImages">
+            <img [src]="getUrl(img)" alt="complaint image"><br>
+            <button (click)="markImageForDeletion(img)">Delete</button>
+          </li>
+        </ul>
+
+        <h4>New Images to Add</h4>
+        <input type="file" multiple (change)="onFileSelect($event)">
+
+        <ul>
+          <li *ngFor="let file of newImages">
+            {{ file.name }}
+            <button (click)="removeNewImage(file)">Remove</button>
+          </li>
+        </ul>
+        <div class="btn-right"><button class="btn apply-btn" (click)="applyImageChanges()">Apply Image Changes</button></div>
+        
+        </div>
+     </mat-tab>
+     
+    </mat-tab-group>
 
     <!-- OFFICER UPDATE FORM -->
-    <div *ngIf="role === 'OFFICER'">
+    <form *ngIf="role === 'OFFICER'" class="form-container">
 
       <div class="form-group">
         <label>Status *</label>
         <select [(ngModel)]="complaint.status" name="status" required>
           <option value="PENDING">PENDING</option>
-          <option value="IN_PROGRESS">IN_PROGRESS</option>
+          <option value="UNDER_INVESTIGATION">UNDER_INVESTIGATION</option>
           <option value="RESOLVED">RESOLVED</option>
+          <option  value="REJECTED">REJECTED</option>
         </select>
       </div>
 
@@ -64,8 +95,6 @@
         <textarea [(ngModel)]="complaint.officerNote" name="officerNote" required>
         </textarea>
       </div>
-    </div>
-
     <div class="dialog-actions">
       <button type="button" class="btn update-btn" (click)="update()">Update</button>
       <button type="button" class="btn cancel-btn" (click)="close()">Cancel</button>

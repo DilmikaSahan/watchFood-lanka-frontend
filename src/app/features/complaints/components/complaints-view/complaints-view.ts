@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -20,20 +20,25 @@ import { Router } from '@angular/router';
   styleUrl: './complaints-view.css',
 })
 export class ComplaintsView implements AfterViewInit {
+  @Input() viewMode: 'all' | 'assigned' | 'user' = 'user';
   displayedColumns: string[] = ['complaintId', 'category', 'status', 'district', 'complaintAt', 'actions'];
   dataSource: MatTableDataSource<Complaint> = new MatTableDataSource();
   showActions = true;
+  
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(private complaintService: ComplaintsService, private keycloakservice: KeycloakService, private router: Router) {}
   roles: string[] = [];
+  privileged: boolean = false;
 
   ngOnInit(): void {
-    this.loadComplaints();
     this.roles = this.keycloakservice.getRoles();
+    this.privileged = this.roles.some(role => ['admin', 'officer'].includes(role.toLowerCase()));
     this.adjustColumnsByRole();
+    this.loadComplaints();
+
   }
 
   ngAfterViewInit() {
@@ -42,10 +47,23 @@ export class ComplaintsView implements AfterViewInit {
   }
 
   loadComplaints() {
-    this.complaintService.getAllComplaints().subscribe({
-      next: (complaints) => this.dataSource.data = complaints,
-      error: (err) => console.error('Error fetching complaints', err)
+    if(this.viewMode === 'user' && !this.privileged){
+      this.complaintService.getComplaintsByUser().subscribe({
+        next: (complaints) => this.dataSource.data = complaints,
+        error: (err) => console.error('Error fetching complaints', err)
     });
+    }else if(this.viewMode === 'assigned' && this.privileged){
+      this.complaintService.getComplaintsByAssignedOfficer().subscribe({
+        next: (complaints) => this.dataSource.data = complaints,
+        error: (err) => console.error('Error fetching complaints', err)
+      })
+    }else{
+      this.complaintService.getAllComplaints().subscribe({
+        next: (complaints) => this.dataSource.data = complaints,
+        error: (err) => console.error('Error fetching complaints', err)
+      })
+    }
+    
   }
 
   applyFilter(event: Event) {
@@ -58,18 +76,14 @@ export class ComplaintsView implements AfterViewInit {
   }
 
   viewComplaint(complaint: Complaint) {
-    this.router.navigate(['user/complaints/details', complaint.complaintId]);
+    const base = this.privileged ? 'officer' : 'user';
+    this.router.navigate([`${base}/complaints/details`, complaint.complaintId]);
   }
 
   adjustColumnsByRole() {
-    const privileged = this.roles.some(role =>
-      ['admin', 'officer'].includes(role.toLowerCase())
-    );
-
-    if (privileged) {
+    if (this.privileged) {
       this.displayedColumns = [
         'complaintId',
-        'complainerId',
         'category',
         'complaintAt',
         'province',
@@ -78,7 +92,6 @@ export class ComplaintsView implements AfterViewInit {
         'location',
         'status',
         'officer',
-        'officerNote',
         'priorityLevel',
         'actions'
       ];

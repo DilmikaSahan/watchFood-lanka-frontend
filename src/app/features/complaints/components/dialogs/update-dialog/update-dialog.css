@@ -4,10 +4,27 @@
   max-width: 550px;
   box-sizing: border-box;
 }
+.image-panel{
+    font-family: Arial, sans-serif;
+}
+img {
+  max-width: 100px;
+  max-height: 100px;
+  object-fit: cover;
+  cursor: pointer;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  transition: transform 0.2s ease;
+}
 
 h2 {
   text-align: center;
   margin-bottom: 15px;
+}
+li{
+    display: inline-block;
+    margin-right: 10px;
+    padding: 5px;
 }
 
 .form-container {
@@ -56,4 +73,20 @@ textarea {
 
 .cancel-btn {
   background: #ddd;
+}
+.apply-btn{
+    
+    background-color: #b4b4b4ff;
+    text-align: center;
+}
+.btn-right{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.apply-btn:hover{
+    opacity: 0.9;
+    background-color: #888888ff;
+    color: white;
 }

@@ -32,6 +32,7 @@ export interface CreateComplaintPayload {
 }
 
 export interface UpdateStatusPayload  {
+  officer: string;
   status: string;        
   officerNote?: string;
 }
@@ -55,15 +56,30 @@ export class ComplaintsService {
     addComplaint(payload: CreateComplaintPayload): Observable<any> {
       return this.http.post(`${this.baseUrl}/addComplaint`, payload);
     }
-    getComplaintsByUser(userId: string): Observable<Complaint[]> {
+    deleteComplaint(complaintId: number) {
+      return this.http.delete(`${this.baseUrl}/deleteComplaint/${complaintId}`);
+    }
+    getComplaintsByUser(): Observable<Complaint[]> {
       return this.http.get<Complaint[]>(`${this.baseUrl}/myComplaints`);
     }
+    getComplaintsByAssignedOfficer(): Observable<Complaint[]> {
+      return this.http.get<Complaint[]>(`${this.baseUrl}/assignedComplaints`);
+    }
     updateUserComplaint(complaint: Complaint) {
-      return this.http.put(`/api/complaint/user`, complaint);
+      return this.http.put(`${this.baseUrl}/updateComplainUser`, complaint);
     }
 
-    updateOfficerComplaint(complaint: Complaint) {
-      return this.http.put(`/api/complaint/officer`, complaint);
-  }
+    updateOfficerComplaint(ComplaintId: number, payload: UpdateStatusPayload) {
+      return this.http.put(`${this.baseUrl}/updateOfficerSection/${ComplaintId}`, payload);
+    }
+    uploadImages(complaintId: number, images: string[]): Observable<string[]> {
+    return this.http.put<string[]>(`${this.baseUrl}/addImages/${complaintId}`, images);
+    }
 
+    deleteImage(complaintId: number, imageUrls: string[]): Observable<string []> {
+    return this.http.put<string []>(`${this.baseUrl}/deleteImages/${complaintId}`, imageUrls);
+    }
+    assignComplaintToOfficer(complaintId: number) {
+      return this.http.put(`${this.baseUrl}/assignOfficer/${complaintId}`, {});
+    }
 }

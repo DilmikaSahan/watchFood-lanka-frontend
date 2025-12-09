@@ -2,8 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
-import {BlobServiceClient} from "@azure/storage-blob";
-
+import { AzureBlobService } from '../../services/azure-blob-service';
 interface DistrictMap{
   [province: string]: string[];
 }
@@ -17,11 +16,8 @@ export class ComplaintForm implements OnInit {
   @Output() submitComplaint = new EventEmitter<any>();
 
   complaintForm!: FormGroup;
-  uploadedImageUrls: string[] = [];
+  uploadedFileNames: string[] = [];
   selectedFiles: File[] = [];
-
-  readonly blobSasUrl = 'https://sahan.blob.core.windows.net/complaint-images?sp=racwdli&st=2025-12-05T04:57:10Z&se=2026-12-05T13:12:10Z&spr=https&sv=2024-11-04&sr=c&sig=3aKW8E%2FbcyLZLonLwHazlfv8JDzMHLMdUXj4P3OI4RQ%3D';
-  CONTAINER_NAME = 'complaint-images';
 
   provinces: string[] = [
     'Central',
@@ -48,7 +44,7 @@ export class ComplaintForm implements OnInit {
   };
 
   filteredDistricts: string[] = [];
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private blobService: AzureBlobService) {}
 
   ngOnInit(): void {
     this.complaintForm = this.fb.group({
@@ -79,13 +75,11 @@ export class ComplaintForm implements OnInit {
   async uploadFiles(): Promise<void> {
     if (!this.selectedFiles.length) return;
 
-    const containerClient = new BlobServiceClient(this.blobSasUrl).getContainerClient(this.CONTAINER_NAME);
-
     for (const file of this.selectedFiles) {
-      const blobClient = containerClient.getBlockBlobClient(file.name);
-      await blobClient.uploadData(file, { blobHTTPHeaders: { blobContentType: file.type } });
-      const fileUrl = `${containerClient.url}/${file.name}`;
-      this.uploadedImageUrls.push(fileUrl);
+      const uniqueFileName = `${Date.now()}-${Math.floor(Math.random() * 1000)}-${file.name}`;
+
+      const uploadedName = await this.blobService.uploadFile(file, uniqueFileName);
+      this.uploadedFileNames.push(uploadedName);
     }
   }
 
@@ -101,7 +95,7 @@ export class ComplaintForm implements OnInit {
     // Emit form data with uploaded image URLs
     const payload = {
       ...this.complaintForm.value,
-      imageUrl: this.uploadedImageUrls
+      imageUrl: this.uploadedFileNames
     };
 
     this.submitComplaint.emit(payload);

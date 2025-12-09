@@ -22,7 +22,13 @@ export const routes: Routes = [
   {
     path: 'officer',
     loadComponent: () => import('./features/dashboards/officer-dashboard/officer-dashboard').then(m => m.OfficerDashboard),
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    children:[
+      {
+        path: 'complaints',
+        loadChildren: () => import('./features/complaints/complaints.routes').then(m => m.complaintRoutes)
+      }
+    ]
   },
   { path: '', redirectTo: '/user', pathMatch: 'full' },
   { path: '**', redirectTo: '/user' }
