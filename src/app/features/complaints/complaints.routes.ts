@@ -41,6 +41,23 @@ export const complaintRoutes: Routes = [
     path: 'adminViewAllUsers',
     loadComponent:()=>import('./components/admin-view-all-users/admin-view-all-users')
         .then(m => m.AdminViewAllUsers)
+  },
+  {
+    path : 'adminAllOfficerView',
+    loadComponent:()=>import('./pages/admin-officerdetails-view/admin-officerdetails-view')
+        .then(m => m.AdminOfficerdetailsView)
+  },
+  {
+    path: 'viewOfficerDetails',
+    loadComponent: () =>
+      import('./components/view-officer-details/view-officer-details')
+        .then(m => m.ViewOfficerDetails)
+  },
+  {
+    path: 'adminDashBoard',
+    loadComponent: () =>import('../dashboards/admin-dashboard/admin-dashboard')
+    .then(m=>m.AdminDashboard)
   }
+
 
 ];

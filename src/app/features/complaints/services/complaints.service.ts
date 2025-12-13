@@ -92,5 +92,8 @@ export class ComplaintsService {
     getComplaintStatistics(): Observable<Complaintstatatistics> {
       return this.http.get<Complaintstatatistics>(`${this.baseUrl}/getComplaintStats`);
     }
+    unassignComplaintFromOfficer(complaintId: number) {
+      return this.http.put(`${this.baseUrl}/updateOfficerAssignment/${complaintId}`, {});
+    }
 
 }

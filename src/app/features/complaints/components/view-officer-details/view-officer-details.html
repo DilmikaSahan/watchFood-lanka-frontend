@@ -1,0 +1,112 @@
+<mat-card-actions>
+      <button mat-raised-button color="primary" (click)="goBack()">
+        Back
+      </button>
+</mat-card-actions>
+<div class="container">
+<div class="crd-container">
+  <mat-card *ngIf="officer">
+    <mat-card-content>
+    <h2>Officer Details</h2>
+      <div class="row">
+        <span class="label">Officer Record ID :</span>
+        <span>{{ officer.id }}</span>
+      </div>
+
+      <div class="row">
+        <span class="label">Officer User ID :</span>
+        <span>{{ officer.officerId }}</span>
+      </div>
+
+      <div class="row">
+        <span class="label">Full Name :</span>
+        <span>{{ officer.fullName }}</span>
+      </div>
+
+      <div class="row">
+        <span class="label">Email :</span>
+        <span>{{ officer.email }}</span>
+      </div>
+
+      <div class="row">
+        <span class="label">Phone Number :</span>
+        <span>{{ officer.phoneNumber }}</span>
+      </div>
+
+      <div class="row">
+        <span class="label">Accountable District :</span>
+        <span>{{ officer.accountableDistrict }}</span>
+      </div>
+
+      <div class="row">
+        <span class="label">Officer Status :</span>
+        <span>{{ officer.officerStatus }}</span>
+      </div>
+
+      <div class="row">
+        <span class="label">Assigned Cases Count :</span>
+        <span>{{ officer.assignedCasesCount }}</span>
+      </div>
+
+      <div class="row">
+        <span class="label">Created At :</span>
+        <span>{{ officer.createAT | date:'yyyy-MM-dd HH:mm:ss' }}</span>
+      </div>
+
+      <div class="row">
+        <span class="label">Updated At :</span>
+        <span>{{ officer.updateAT | date:'yyyy-MM-dd HH:mm:ss' }}</span>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+  </div>
+
+  <mat-card *ngIf="!officer">
+    <mat-card-content>
+      <p>No officer data found.</p>
+    </mat-card-content>
+  </mat-card>
+ <div class="crd-container">
+  <mat-card *ngIf="officer">
+    <mat-card-content>
+    <h2>Update Details</h2>
+
+      <!-- STATUS DROPDOWN -->
+      <div class="row">
+        <span class="label">Officer Status:</span>
+        <mat-form-field appearance="fill" style="width: 60%;">
+          <mat-label>Status</mat-label>
+          <mat-select #status [(ngModel)]="officer.officerStatus">
+            <mat-option *ngFor="let s of officerStatusList" [value]="s">
+              {{ s }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- DISTRICT DROPDOWN -->
+      <div class="row">
+        <span class="label">Accountable District:</span>
+        <mat-form-field appearance="fill" style="width: 60%;">
+          <mat-label>District</mat-label>
+          <mat-select #district [(ngModel)]="officer.accountableDistrict">
+            <mat-option *ngFor="let d of districtList" [value]="d">
+              {{ d }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- BUTTONS -->
+      <div class="buttons">
+        <button mat-raised-button color="primary" (click)="updateOfficer(status.value,district.value)">
+          Save Changes
+        </button>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+</div>
+
+</div>

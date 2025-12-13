@@ -72,6 +72,9 @@
   <div class="actions" *ngIf="canAssign()">
     <button (click)="assignToMe()">Assign Me</button>
   </div>
+  <div class="actions" *ngIf="UpdateAssign()">
+    <button (click)="UnassignOfficer()">Remove officer from case</button>
+  </div>
 </div>
   
 

@@ -7,6 +7,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { UpdateDialog} from '../dialogs/update-dialog/update-dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
+import { AdminService } from '../../services/admin-service';
 
 
 @Component({
@@ -27,6 +28,7 @@ export class ComplaintDetail {
 
   constructor(
     private complaintsService: ComplaintsService,
+    private adminService: AdminService,
     private keycloakservice: KeycloakService,
     private dialog: MatDialog,
     private route: ActivatedRoute,
@@ -88,18 +90,59 @@ canDelete(): boolean {
 canAssign(): boolean {
     return this.role === 'OFFICER' && this.complaint.officer==null;
 }
+UpdateAssign():boolean{
+    return this.role === 'ADMIN' && this.complaint.officer!==null;
+}
 assignToMe(){
   if(confirm("Do you want to assign this complaint to yourself?")) {
-    if(this.complaint.status=='PENDING' && this.complaint.officer==null){
-      this.complaintsService.assignComplaintToOfficer(this.complaintId).subscribe({
-        next: () => {alert("Complaint assigned successfully."); this.loadComplaint();},
-        error: (err) => {}});
-    }else{
-      alert("Only unassigned complaints with PENDING status can be assigned.");
+    if(this.complaint.status!=='PENDING' && this.complaint.officer!==null){
+      return alert("Only complaints with PENDING status and unassigned can be assigned.");
     }
-  
+    this.complaintsService.assignComplaintToOfficer(this.complaintId).subscribe({
+      next: () => {
+        this.updateAssignedCases('INCREMENT', 'Complaint assigned to you successfully.');
+      },
+      error: (err) => {
+        console.error('Error assigning complaint:', err);
+        alert("Error assigning complaint.");
+      }
+    });
+
+}
+}
+UnassignOfficer():void{
+  if(confirm("Are you sure you want to remove the officer from this case?")) {
+    if(this.complaint.status==='RESOLVED' || this.complaint.status==='REJECTED'){
+      return alert("Cannot unassign officer from a resolved or rejected complaint.");
+    }
+    if(this.complaint.officer===null){
+      return alert("No officer is currently assigned to this complaint.");
+    }
+    this.complaintsService.unassignComplaintFromOfficer(this.complaintId).subscribe({
+      next: () => {
+        this.updateAssignedCases('DECREMENT', 'Officer unassigned from the complaint successfully.');
+      },
+      error: (err) => {
+        console.error('Error unassigning officer:', err);
+        alert("Error unassigning officer.");
+      }
+    }); 
   }
 }
+
+private updateAssignedCases(action: 'INCREMENT' | 'DECREMENT',successMessage: string): void {
+  this.adminService.UpdateAssignedCasesCount(this.complaint.officer,action).subscribe({
+      next: () => {
+        this.loadComplaint();
+        alert(successMessage);
+      },
+      error: (err) => {
+        console.error('Update count error:', err);
+        alert("Operation completed but failed to update case count.");
+      }
+    });
+}
+
 deleteComplaint(){
   if(confirm("Are you sure you want to delete this complaint?")) {
     if(this.complaint.status!=='PENDING'){
@@ -116,3 +159,4 @@ deleteComplaint(){
 }
 }
 }
+

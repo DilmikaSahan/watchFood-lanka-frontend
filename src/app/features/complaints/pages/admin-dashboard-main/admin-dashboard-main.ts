@@ -31,6 +31,6 @@ export class AdminDashboardMain {
     this.router.navigate(['/admin/complaints/adminViewAllUsers']);
   }
   manageOfficers(){
-    console.log("Navigating to manage officers");
+    this.router.navigate(['/admin/complaints/adminAllOfficerView']);
   }
 }

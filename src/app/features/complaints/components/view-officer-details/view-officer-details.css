@@ -1,0 +1,49 @@
+.container {
+  display : flex;
+}
+.crd-container{
+    width: 600px;
+    padding: 20px;    
+}
+h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-weight: 600;
+  
+}
+
+mat-card {
+  padding: 20px;
+  padding-top: 0px;
+  border-radius: 0px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.label {
+  font-weight: 600;
+  color: #333333;
+}
+
+mat-card-actions {
+    padding-left: 20px;
+    margin-top: 0px;
+    text-align: right;
+}
+
+button {
+  padding: 6px 25px;
+}
+mat-card-content{
+    margin-top: 0px;
+}
+

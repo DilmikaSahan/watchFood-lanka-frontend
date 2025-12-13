@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, retry } from 'rxjs';
 
 
 export interface UserStatistics {
@@ -19,6 +19,22 @@ export interface UserDetails{
     createAT: Date;
     updateAT: Date;
 }
+export interface OfficerDetails{
+    id : number;
+    officerId : number;
+    accountableDistrict: string;
+    officerStatus: string;
+    assignedCasesCount: number;
+    fullName: string;
+    email: string;
+    phoneNumber: string;
+    createAT: Date;
+    updateAT: Date;
+}
+export interface UpdateOfficerPayload {
+    officerStatus: string;
+    accountableDistrict: string;
+}
 @Injectable({
   providedIn: 'root',
 })
@@ -32,5 +48,14 @@ export class AdminService {
   }
   getAllusers(): Observable<UserDetails[]>{
     return this.http.get<UserDetails[]>(`${this.baseUrl}/allusers`);
+  }
+  getAllOfficers(): Observable<OfficerDetails[]>{
+    return this.http.get<OfficerDetails[]>(`${this.baseUrl}/getOfficerDetails`);
+  }
+  updateOfficerDetails(Id:number, payload: UpdateOfficerPayload): Observable<any>{ 
+    return this.http.put<any>(`${this.baseUrl}/updateOfficerDetails/${Id}`, payload);
+   }
+   UpdateAssignedCasesCount(officerId: string | undefined,option:string): Observable<any>{
+    return this.http.put<any>(`${this.baseUrl}/UpdateAssignedCasesCount/${officerId}`,option);
   }
 }
