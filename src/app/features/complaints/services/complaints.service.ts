@@ -14,7 +14,7 @@ export interface Complaint {
   location?: string;
   imageUrl?: string[];        
   status?: string;             
-  priorityLevel?: number;      // set by AI
+  priorityLevel?: string;      // set by AI
   officer?: string;            // officer UUID
   officerNote?: string;
   complaintAt?: Date;
