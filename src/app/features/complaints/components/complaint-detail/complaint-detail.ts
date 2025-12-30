@@ -131,9 +131,21 @@ UnassignOfficer():void{
 }
 
 private updateAssignedCases(action: 'INCREMENT' | 'DECREMENT',successMessage: string): void {
+  this.loadComplaint();
+  if(this.canAssign()){
+    this.adminService.UpdateAssignedCasesCount(this.keycloakservice.getUserID(),action).subscribe({
+      next: () => {
+        alert(successMessage);  
+      },
+      error: (err) => {
+        console.error('Update count error:', err);  
+        alert("Operation completed but failed to update case count.");
+      }
+    });
+    return;
+  }
   this.adminService.UpdateAssignedCasesCount(this.complaint.officer,action).subscribe({
       next: () => {
-        this.loadComplaint();
         alert(successMessage);
       },
       error: (err) => {

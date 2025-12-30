@@ -87,6 +87,7 @@ export class ComplaintsService {
     return this.http.put<string []>(`${this.baseUrl}/deleteImages/${complaintId}`, imageUrls);
     }
     assignComplaintToOfficer(complaintId: number) {
+      console.log('Assigning complaint to officer:', complaintId);
       return this.http.put(`${this.baseUrl}/assignOfficer/${complaintId}`, {});
     }
     getComplaintStatistics(): Observable<Complaintstatatistics> {

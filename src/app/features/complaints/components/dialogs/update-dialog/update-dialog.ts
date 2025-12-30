@@ -6,9 +6,18 @@ import { ComplaintsService, Complaint, UpdateStatusPayload} from '../../../servi
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { AzureBlobService } from '../../../services/azure-blob-service'; 
-type ProvinceName = 'Western' | 'Central' | 'Southern' | 'Eastern' | 'Northern';
-import { KeycloakService } from '../../../../../core/auth/services/keycloak';
+type ProvinceName =
+  | 'Western'
+  | 'Central'
+  | 'Southern'
+  | 'Eastern'
+  | 'Northern'
+  | 'North Western'
+  | 'North Central'
+  | 'Uva'
+  | 'Sabaragamuwa';
 
+type DistrictMap = Record<ProvinceName, string[]>;
 
 @Component({
   selector: 'app-update-dialog',
@@ -36,14 +45,28 @@ export class UpdateDialog {
     'OTHER'
   ];
 
-  provinces:ProvinceName[] = ["Western", "Central", "Southern", "Eastern", "Northern"];
+  provinces: ProvinceName[] = [
+    'Central',
+    'Eastern',
+    'North Central',
+    'Northern',
+    'North Western',
+    'Sabaragamuwa',
+    'Southern',
+    'Uva',
+    'Western'
+  ];
 
-  provinceDistrictMap: Record<ProvinceName, string[]> = {
-    Western: ["Colombo", "Gampaha", "Kalutara"],
-    Central: ["Kandy", "Matale", "Nuwara Eliya"],
-    Southern: ["Galle", "Matara", "Hambantota"],
-    Eastern: ["Trincomalee", "Batticaloa", "Ampara"],
-    Northern: ["Jaffna", "Kilinochchi", "Mannar"]
+  districtsByProvince: DistrictMap = {
+    'Central': ['Kandy', 'Matale', 'Nuwara Eliya'],
+    'Eastern': ['Ampara', 'Batticaloa', 'Trincomalee'],
+    'North Central': ['Anuradhapura', 'Polonnaruwa'],
+    'Northern': ['Jaffna', 'Kilinochchi', 'Mannar', 'Vavuniya', 'Mullaitivu'],
+    'North Western': ['Kurunegala', 'Puttalam'],
+    'Sabaragamuwa': ['Kegalle', 'Ratnapura'],
+    'Southern': ['Galle', 'Matara', 'Hambantota'],
+    'Uva': ['Badulla', 'Moneragala'],
+    'Western': ['Colombo', 'Gampaha', 'Kalutara']
   };
   districts: string[] = [];
 
@@ -64,7 +87,7 @@ export class UpdateDialog {
     this.complaint.district = ''; // reset district selection
 } loadDistricts() {
   const province = this.complaint.province as ProvinceName;
-  this.districts = this.provinceDistrictMap[province] || [];
+  this.districts = this.districtsByProvince[province] || [];
 }
   isUserValid(): boolean {
     return !!(
